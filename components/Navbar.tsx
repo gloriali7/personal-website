@@ -11,13 +11,11 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 
-const sectionIds = ["home", "about"];
-
 const links = [
   { href: "/#home", label: "Home", sectionId: "home" },
   { href: "/#about", label: "About", sectionId: "about" },
-  { href: "/projects", label: "Projects" },
-  { href: "/contact", label: "Contact" },
+  { href: "/#projects", label: "Projects", sectionId: "projects" },
+  { href: "/#contact", label: "Contact", sectionId: "contact" },
 ];
 
 export default function Navbar() {
@@ -38,8 +36,8 @@ export default function Navbar() {
       { rootMargin: "-50% 0px -50% 0px" }
     );
 
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
+    links.forEach(({ sectionId }) => {
+      const el = document.getElementById(sectionId);
       if (el) observer.observe(el);
     });
 
@@ -58,17 +56,16 @@ export default function Navbar() {
         <NavigationMenu>
           <NavigationMenuList className="gap-0.5 sm:gap-1">
             {links.map((link) => {
-              const active = link.sectionId
-                ? pathname === "/" && activeSection === link.sectionId
-                : pathname === link.href;
+              const active =
+                pathname === "/" && activeSection === link.sectionId;
               return (
                 <NavigationMenuItem key={link.href}>
                   <NavigationMenuLink
                     active={active}
                     render={<Link href={link.href} />}
                     className={cn(
-                      "rounded-full px-2.5 py-1.5 text-xs font-medium bg-muted/60 sm:px-4 sm:py-2 sm:text-sm",
-                      active && "bg-muted"
+                      "rounded-full px-2.5 py-1.5 text-xs font-medium bg-muted/60 hover:bg-muted focus:bg-muted/60 sm:px-4 sm:py-2 sm:text-sm",
+                      "data-active:bg-[#ece5d8] data-active:text-neutral-900 data-active:hover:bg-[#ece5d8] data-active:focus:bg-[#ece5d8]"
                     )}
                   >
                     {link.label}

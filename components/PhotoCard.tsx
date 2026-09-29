@@ -6,19 +6,25 @@ import { cn } from "@/lib/utils";
 export default function PhotoCard({
   src,
   alt = "",
+  caption,
   rotate,
   className,
   wrapperClassName,
 }: {
   src?: string;
   alt?: string;
+  caption?: string;
   rotate?: string;
   className?: string;
   wrapperClassName?: string;
 }) {
   return (
     <PaperCard
-      className={cn("p-2 pb-8 sm:p-3 sm:pb-10", className)}
+      className={cn(
+        "p-2 sm:p-3",
+        caption ? "pb-11 sm:pb-12" : "pb-8 sm:pb-10",
+        className,
+      )}
       rotate={rotate}
       wrapperClassName={wrapperClassName}
       smallTape
@@ -29,7 +35,7 @@ export default function PhotoCard({
             src={src}
             alt={alt}
             fill
-            sizes="(min-width: 1024px) 220px, 45vw"
+            sizes="(min-width: 1280px) 240px, 45vw"
             className="object-cover"
           />
         ) : (
@@ -40,6 +46,13 @@ export default function PhotoCard({
           </div>
         )}
       </div>
+      {caption && (
+        <p
+          className={`${stamp.className} mt-2 px-1 text-center text-base leading-snug text-neutral-900 sm:mt-3 sm:text-lg`}
+        >
+          {caption}
+        </p>
+      )}
     </PaperCard>
   );
 }

@@ -1,11 +1,6 @@
-import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import PaperCard from "@/components/PaperCard";
 import { stamp } from "@/lib/fonts";
-
-export const metadata: Metadata = {
-  title: "Contact | Gloria Li",
-};
 
 function GmailLogo() {
   return (
@@ -64,56 +59,54 @@ const contacts: {
   },
 ];
 
-export default function Contact() {
+export default function ContactCard() {
   return (
-    <section className="flex min-h-[calc(100vh-65px)] items-center justify-center bg-background px-5 py-8 sm:p-8">
-      <PaperCard className="w-full max-w-xl px-6 pt-16 pb-20 sm:px-16">
-        <p
-          className={`${stamp.className} text-center text-2xl tracking-wide text-neutral-600 sm:text-3xl`}
-        >
-          contact information
-        </p>
-        <ul className="mt-10 flex flex-col gap-4">
-          {contacts.map((contact) => (
-            <li key={contact.label}>
-              <a
-                href={contact.href}
-                target={contact.href.startsWith("http") ? "_blank" : undefined}
-                rel={
-                  contact.href.startsWith("http")
-                    ? "noopener noreferrer"
-                    : undefined
-                }
-                className="group flex items-center gap-4 border-b sm:gap-5 border-dashed border-neutral-400 pb-4 transition-transform hover:-translate-y-0.5"
-              >
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/70 shadow-sm">
-                  {contact.logo}
-                </span>
-                {contact.handle ? (
-                  <span className="flex min-w-0 flex-col">
-                    <span
-                      className={`${stamp.className} text-sm uppercase tracking-widest text-neutral-500`}
-                    >
-                      {contact.label}
-                    </span>
-                    <span
-                      className={`${stamp.className} truncate text-base text-neutral-900 group-hover:underline sm:text-xl`}
-                    >
-                      {contact.handle}
-                    </span>
-                  </span>
-                ) : (
+    <PaperCard className="w-full max-w-xl px-6 pt-16 pb-20 sm:px-16">
+      <p
+        className={`${stamp.className} text-center text-2xl tracking-wide text-neutral-600 sm:text-3xl`}
+      >
+        contact information
+      </p>
+      <ul className="mt-10 flex flex-col gap-4">
+        {contacts.map((contact) => (
+          <li key={contact.label}>
+            <a
+              href={contact.href}
+              target={contact.href.startsWith("http") ? "_blank" : undefined}
+              rel={
+                contact.href.startsWith("http")
+                  ? "noopener noreferrer"
+                  : undefined
+              }
+              className="group flex items-center gap-4 border-b sm:gap-5 border-dashed border-neutral-400 pb-4 transition-transform hover:-translate-y-0.5"
+            >
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/70 shadow-sm">
+                {contact.logo}
+              </span>
+              {contact.handle ? (
+                <span className="flex min-w-0 flex-col">
                   <span
-                    className={`${stamp.className} text-lg text-neutral-900 group-hover:underline sm:text-xl`}
+                    className={`${stamp.className} text-sm uppercase tracking-widest text-neutral-500`}
                   >
                     {contact.label}
                   </span>
-                )}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </PaperCard>
-    </section>
+                  <span
+                    className={`${stamp.className} truncate text-base text-neutral-900 group-hover:underline sm:text-xl`}
+                  >
+                    {contact.handle}
+                  </span>
+                </span>
+              ) : (
+                <span
+                  className={`${stamp.className} text-lg text-neutral-900 group-hover:underline sm:text-xl`}
+                >
+                  {contact.label}
+                </span>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </PaperCard>
   );
 }
