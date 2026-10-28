@@ -1,3 +1,4 @@
+import Image from "next/image";
 import ContactCard from "@/components/ContactCard";
 import PaperCard from "@/components/PaperCard";
 import PhotoCard from "@/components/PhotoCard";
@@ -45,8 +46,34 @@ const aboutPhotos: {
     },
   ];
 
-// To add a project, add an entry here. `href` is optional.
-const projects: { title: string; description: string; href?: string }[] = [];
+// Each project gets its own torn, taped sheet. `href` is optional — sheets
+// without one aren't clickable. `image` is an optional screenshot in /public.
+const projects: {
+  title: string;
+  description: string;
+  href?: string;
+  image?: { src: string; alt: string };
+  rotate: string;
+}[] = [
+  {
+    title: "My Cookbook",
+    description:
+      "Hungry for inspiration? Build your own cookbook of recipes you love, then browse other people's cookbooks to discover what everyone else is cooking.",
+    href: "https://main.d3i9kbu0ze4jkf.amplifyapp.com",
+    rotate: "-rotate-2",
+  },
+  {
+    title: "Mystery Hunters",
+    description:
+      "Feeling like chasing down a mystery? Step into an 8-bit, choose-your-path detective game built in Java Swing. Solve cases, collect clues, and play it right in your browser with CheerpJ.",
+    href: "https://mystery-hunters.dnja5kcpvlfil.amplifyapp.com/",
+    image: {
+      src: "/mystery-hunters.png",
+      alt: "Mystery Hunters main menu screen",
+    },
+    rotate: "rotate-2",
+  },
+];
 
 export default function Home() {
   return (
@@ -113,54 +140,74 @@ export default function Home() {
         id="projects"
         className="flex min-h-[calc(100vh-65px)] scroll-mt-16 items-center justify-center bg-background p-8"
       >
-        <PaperCard
-          className="w-full max-w-2xl px-6 pt-16 pb-20 sm:px-16"
-          rotate="-rotate-1"
-        >
-          <p
-            className={`${stamp.className} text-center text-2xl tracking-wide text-neutral-600 sm:text-3xl`}
-          >
-            projects
-          </p>
-          {projects.length === 0 ? (
+        <div className="flex w-full max-w-2xl flex-col items-center gap-12">
+          <PaperCard className="w-full px-6 pt-12 pb-14 sm:px-16" rotate="-rotate-1">
             <p
-              className={`${stamp.className} mt-8 text-center text-lg text-neutral-900 sm:text-xl`}
+              className={`${stamp.className} text-center text-2xl tracking-wide text-neutral-600 sm:text-3xl`}
             >
-              coming soon...
+              projects
             </p>
-          ) : (
-            <ul className="mt-10 flex flex-col gap-6">
-              {projects.map((project) => (
-                <li
-                  key={project.title}
-                  className="border-b border-dashed border-neutral-400 pb-5"
+          </PaperCard>
+          {projects.map((project) => {
+            const content = (
+              <>
+                {project.image && (
+                  <div className="relative mb-8 aspect-[1284/838] w-full -rotate-1 overflow-hidden border-4 border-white bg-neutral-300/50 shadow-md">
+                    <Image
+                      src={project.image.src}
+                      alt={project.image.alt}
+                      fill
+                      sizes="(min-width: 672px) 560px, 90vw"
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+                <h2
+                  className={`${stamp.className} text-2xl text-neutral-900 group-hover:underline sm:text-3xl`}
                 >
-                  <h2
-                    className={`${stamp.className} text-xl text-neutral-900 sm:text-2xl`}
-                  >
-                    {project.href ? (
-                      <a
-                        href={project.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:underline"
-                      >
-                        {project.title}
-                      </a>
-                    ) : (
-                      project.title
-                    )}
-                  </h2>
+                  {project.title}
+                </h2>
+                <p
+                  className={`${stamp.className} mt-3 text-base leading-relaxed text-neutral-700 sm:text-lg`}
+                >
+                  {project.description}
+                </p>
+                {project.href && (
                   <p
-                    className={`${stamp.className} mt-2 text-base leading-relaxed text-neutral-700 sm:text-lg`}
+                    className={`${stamp.className} mt-4 text-sm uppercase tracking-widest text-neutral-500`}
                   >
-                    {project.description}
+                    visit site &rarr;
                   </p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </PaperCard>
+                )}
+              </>
+            );
+            return (
+              <PaperCard
+                key={project.title}
+                className="px-6 pt-12 pb-16 sm:px-14"
+                rotate={project.rotate}
+                wrapperClassName={
+                  project.href
+                    ? "w-full transition-transform hover:-translate-y-1"
+                    : "w-full"
+                }
+              >
+                {project.href ? (
+                  <a
+                    href={project.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group block"
+                  >
+                    {content}
+                  </a>
+                ) : (
+                  content
+                )}
+              </PaperCard>
+            );
+          })}
+        </div>
       </section>
 
       <section
